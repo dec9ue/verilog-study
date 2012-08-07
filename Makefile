@@ -1,11 +1,13 @@
 all : test
 
-test: test.vvp
+test: modexp1small.vvp
 	vvp $<
 
-test.vvp: test.v
+.v.vvp:
 	mkdir -p tmp
 	env TMP=./tmp iverilog $< -o $@
+
+.SUFFIXES: .vvp .v
 
 clean:
 	rm -rfv *.vvp *.bak a.out *~
