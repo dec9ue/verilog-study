@@ -1,6 +1,6 @@
 all : test
 
-test: modexp1.vvp
+test: modexp2.vvp
 	vvp $<
 
 .v.vvp:
