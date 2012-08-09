@@ -71,7 +71,7 @@ module modexp1 ( e ,n,m, r);
     , m505, r505 , m506, r506 , m507, r507 , m508, r508 , m509, r509 , m510, r510 , m511, r511, m512, r512;
 
   assign m001 = m;
-  assign r001 = (1 * (1 + e[0] * (m001 - 1))) % n;
+  assign r001 = mult_non_zero(1,e[0],m001) % n;
 
   assign m002 = twice_mod(m001,n); assign r002 = mult_non_zero(r001, e[1],m002) % n;
   assign m003 = twice_mod(m002,n); assign r003 = mult_non_zero(r002, e[2],m003) % n;
