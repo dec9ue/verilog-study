@@ -1,6 +1,6 @@
 all : test
 
-test: test1.vvp
+test: test2.vvp
 	vvp $<
 
 .v.vvp:
