@@ -7,7 +7,7 @@ type body =   Arith of arith * body | ModCall of modcall * body | Choice of cond
 
 type module = Module of port list * def list * connect * body
 
-let closure_to_body f = 
+let closure_to_body env f = 
   | Closure.Unit -> 
   | Closure.Int i -> string_of_int i
   | Closure.Float _ -> unsupp

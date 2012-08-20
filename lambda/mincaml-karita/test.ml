@@ -29,7 +29,27 @@ let sample1 = make_sample
 "let a = let rec f x = x + 2 in f ( f ( 32)) in ()";;
 
 let sample2 = make_sample
-"let a = let rec f x = x + 2 in let rec g x y = x + y in let rec h x = g 32 x in f ( f ( h 92)) in a";;
+"
+let top =
+    let rec f x = x + 2 in
+    let rec g x y = x + y in
+    let rec h x = g 32 x in
+    let rec a c = f ( f ( h 92)) in
+    (a 10) in
+print_int top
+";;
+
+let sample3 = make_sample
+"
+let top =
+    let rec f x = x + 2 in
+    let rec g x y = x + y in
+    let z = g 100 20 in
+    let rec h x = g z x in
+    let rec a c = f ( f ( h z)) in
+    (a 10) in
+print_int top
+";;
 
 let id x = x;;
 let fold_string_with_sep sep f list = 
@@ -65,7 +85,7 @@ let rec print_closure c = let unsupp = "unsupported" in match c with
   | Closure.IfLE (c1,c2,t1,t2) -> "if " ^ c1 ^ " <= " ^ c2 ^ "\n then " ^ print_closure t1 ^ "\n else " ^ print_closure t2
   | Closure.Let ((v1,_),t1,t2)   -> "let " ^ v1 ^ " = " ^ print_closure t1 ^ " in\n" ^ print_closure t2
   | Closure.Var t -> t
-  | Closure.MakeCls ((t1,t2),c1,t3) -> unsupp (*"("^t1^of (Id.t * Type.t) * closure * t *)
+  | Closure.MakeCls ((t1,t2),c1,t3) -> "(["^print_closure_closure c1 ^ "] ->\n" ^ print_closure t3 ^ ")"
   | Closure.AppCls (v1,ts) -> "("^ v1 ^ " " ^ fold_string id ts ^ ")"
   | Closure.AppDir (v1,ts) -> "("^ print_id_l v1 ^ " " ^ fold_string id ts ^ ")"
   | Closure.Tuple (ts) -> "(tuple: "^ fold_string id ts ^ ")"
@@ -81,9 +101,12 @@ let print_fundef f =
     
 let print_prog p = match p with
   Closure.Prog( plist, cl )->
-    fold_string_with_sep "\n>\n" print_fundef plist;;
+    fold_string_with_sep "\n>\n" print_fundef plist
+    ^ print_closure cl;;
 
+let _ =  Printf.printf "%s\n" ( print_prog (snd sample1));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample2));;
+let _ =  Printf.printf "%s\n" ( print_prog (snd sample3));;
 
 
 (*
