@@ -50,6 +50,32 @@ let top =
     (a 10) in
 print_int top
 ";;
+let sample4 = make_sample
+"
+let top =
+    let rec f x = x + 2 in
+    let rec g x y = x + y in
+    let rec h x = g 32 x in
+    let rec a c = if f 3 = h 4
+      then f ( f ( h 92))
+      else 0
+    in
+    (a 10) in
+print_int top
+";;
+let sample5 = make_sample
+"
+let top =
+    let rec f x = x + 2 in
+    let rec g x y = x + y in
+    let rec h x = g 32 x in
+    let a = if f 3 = h 4
+      then f ( f ( h 92))
+      else 0
+    in
+    (f a) in
+print_int top
+";;
 
 let id x = x;;
 let fold_string_with_sep sep f list = 
@@ -100,13 +126,15 @@ let print_fundef f =
   ;;
     
 let print_prog p = match p with
-  Closure.Prog( plist, cl )->
-    fold_string_with_sep "\n>\n" print_fundef plist
-    ^ print_closure cl;;
+  Closure.Prog( plist, cl )->"\n####\n" ^
+    fold_string_with_sep "\nand\n" print_fundef plist
+    ^ print_closure cl ^ "\n####\n";;
 
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample1));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample2));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample3));;
+let _ =  Printf.printf "%s\n" ( print_prog (snd sample4));;
+let _ =  Printf.printf "%s\n" ( print_prog (snd sample5));;
 
 
 (*
