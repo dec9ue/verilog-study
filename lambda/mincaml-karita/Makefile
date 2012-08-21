@@ -1,9 +1,9 @@
-all: test.cmo
 	
 
 sub1:
-	ocamlc -c -g test.mli
 	ocamlc -c -g test.ml
+	ocamlc -c -g verilog.ml
+all: test.cmo
 sub2:
 	ocamllex  lexer.mll
 	ocamlyacc  parser.mly
