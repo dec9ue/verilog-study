@@ -1,0 +1,23 @@
+        #load "type.cmo";;
+        #load "id.cmo";;
+        #load "m.cmo";;
+        #load "s.cmo";;
+        #load "syntax.cmo";;
+        #load "parser.cmo";;
+        #load "lexer.cmo";;
+        #load "typing.cmo";;
+
+	#load "kNormal.cmo";;
+	#load "alpha.cmo";;
+	#load "closure.cmo";;
+	#load "beta.cmo";;
+	#load "assoc.cmo";;
+	#load "inline.cmo";;
+	#load "constFold.cmo";;
+	#load "elim.cmo";;
+	#load "test.cmo";;
+	#load "verilog.cmo";;
+
+
+
+
