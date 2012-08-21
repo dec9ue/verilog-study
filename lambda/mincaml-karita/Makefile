@@ -2,7 +2,7 @@
 
 sub1:
 	ocamlc -c -g test.ml
-	ocamlc -c -g verilog.ml
+	ocamlc -c -g vmod.ml
 all: test.cmo
 sub2:
 	ocamllex  lexer.mll

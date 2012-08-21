@@ -77,6 +77,29 @@ let top =
 print_int top
 ";;
 
+let sample6 = make_sample
+"
+let top =
+    let rec f x = x + 2 in
+    let rec g x y = x + y in
+    let rec h x = x + x in
+    let a = f 3 in
+    if( (g 3 5) = (f 3)) then
+      let b = (f 7) in
+      if( (f 7) = (g (f 3) 9) ) then
+        let c = f (10) in
+        c + b + 100
+      else
+        let d = h (10) in
+        (f a) + d
+    else
+      if( (g 3 5) = (f 3)) then
+        g a a
+      else
+        f a
+    in
+print_int top
+";;
 let id x = x;;
 let fold_string_with_sep sep f list = 
   List.fold_right (fun x y -> f x ^ sep ^ y) list "";;
@@ -93,7 +116,7 @@ let print_name_l f = print_id_l (fst f.Closure.name);;
 let print_args f = fold_string_fst f.Closure.args ;;
 let print_formal_fv f = fold_string_fst f.Closure.formal_fv ;;
 
-let print_closure_closure c = "("^ print_id_l c.Closure.entry ^" " ^ fold_string id c.Closure.actual_fv ^")";;
+let print_closure_closure c = "("^ print_id_l c.Closure.entry ^" $ " ^ fold_string id c.Closure.actual_fv ^")";;
 
 let rec print_closure c = let unsupp = "unsupported" in match c with
   | Closure.Unit -> "()"
@@ -112,8 +135,8 @@ let rec print_closure c = let unsupp = "unsupported" in match c with
   | Closure.Let ((v1,_),t1,t2)   -> "let " ^ v1 ^ " = " ^ print_closure t1 ^ " in\n" ^ print_closure t2
   | Closure.Var t -> t
   | Closure.MakeCls ((t1,t2),c1,t3) -> "(["^print_closure_closure c1 ^ "] ->\n" ^ print_closure t3 ^ ")"
-  | Closure.AppCls (v1,ts) -> "("^ v1 ^ " " ^ fold_string id ts ^ ")"
-  | Closure.AppDir (v1,ts) -> "("^ print_id_l v1 ^ " " ^ fold_string id ts ^ ")"
+  | Closure.AppCls (v1,ts) -> "(*"^ v1 ^ " " ^ fold_string id ts ^ ")"
+  | Closure.AppDir (v1,ts) -> "(+"^ print_id_l v1 ^ " " ^ fold_string id ts ^ ")"
   | Closure.Tuple (ts) -> "(tuple: "^ fold_string id ts ^ ")"
   | Closure.LetTuple (ids,v1,v2) -> "let "^ fold_string_fst ids ^ " = " ^ v1 ^ " in\n" ^ print_closure v2
   | Closure.Get(t1,i1) -> "("^t1^"["^i1^"])"
@@ -135,6 +158,7 @@ let _ =  Printf.printf "%s\n" ( print_prog (snd sample2));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample3));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample4));;
 let _ =  Printf.printf "%s\n" ( print_prog (snd sample5));;
+let _ =  Printf.printf "%s\n" ( print_prog (snd sample6));;
 
 
 (*
