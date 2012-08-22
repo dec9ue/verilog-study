@@ -2,6 +2,7 @@
 
 sub1:
 	ocamlc -c -g test.ml
+	ocamlc -c -g vmod.mli
 	ocamlc -c -g vmod.ml
 all: test.cmo
 sub2:
