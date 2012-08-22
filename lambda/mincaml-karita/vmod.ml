@@ -5,7 +5,7 @@ type exp  = Val of int | Var of Id.t | Neg of Id.t | Add of Id.t * Id.t | Sub of
 type cond = Eq of Id.t * Id.t | LE of Id.t * Id.t
 type body = Seq of body * body | Choice of cond * body * body | Ass of Id.t * exp | Return of exp 
 type seq  = SeqC of int * cond * int * int | SeqA of int * Id.t * exp * int | SeqR of int * exp
-type modl = Mod of Id.t * Id.t list * seq list
+type vmod = {modname: Id.t * Id.t list ;body: seq list}
 
 type env  = FunDef of Id.t * Id.t list | VarDef of Id.t
 
@@ -75,7 +75,7 @@ let fundef_to_module f = match fst f.Closure.name with | Id.L name ->
   let arglist = (List.map fst (f.Closure.formal_fv @ f.Closure.args))in
   let env     = push_fundef empty_env name arglist in
   let c1      = closure_to_body env f.Closure.body in
-  Mod (name,arglist,fst (body_to_seq_list c1 0 0))
+  {modname=name;body=arglist,fst (body_to_seq_list c1 0 0)}
               
 
 let prog_to_module = function Closure.Prog(fundef_list,main) ->
@@ -106,5 +106,7 @@ let sample2  = prog_to_module (snd Test.sample2)
 let sample3  = prog_to_module (snd Test.sample3)
 *)
 let sample4  = prog_to_module (snd Test.sample4)
+let sample5  = prog_to_module (snd Test.sample4)
+let sample6  = prog_to_module (snd Test.sample4)
 
 
