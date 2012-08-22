@@ -75,7 +75,7 @@ let fundef_to_module f = match fst f.Closure.name with | Id.L name ->
   let arglist = (List.map fst (f.Closure.formal_fv @ f.Closure.args))in
   let env     = push_fundef empty_env name arglist in
   let c1      = closure_to_body env f.Closure.body in
-  {modname=name;body=arglist,fst (body_to_seq_list c1 0 0)}
+  {modname=name,arglist;body=fst (body_to_seq_list c1 0 0)}
               
 
 let prog_to_module = function Closure.Prog(fundef_list,main) ->
