@@ -4,6 +4,7 @@ sub1:
 	ocamlc -c -g test.ml
 	ocamlc -c -g vmod.mli
 	ocamlc -c -g vmod.ml
+	ocamlc -c -g vemit.ml
 all: test.cmo
 sub2:
 	ocamllex  lexer.mll
