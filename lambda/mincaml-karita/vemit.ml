@@ -1,9 +1,48 @@
 
+type block = {reglist:Id.t list;wirelist:Id.t list;body=string}
 
-let module_to_verilog m = "module "
+let string_of_id_t id_t = "MINCAML_ID_" ^ id_t
+
+let string_of_status_var = "MINCAML_INTERNAL_status";
+
+let seqc_body index c b1 b2 =
+       begin
+         match c with
+         | Eq (v1,v2) ->
+             "case " ^ string_of_int index ^ ":\n begin\n"
+           ^ "  if(" ^string_of_id_t v1 ^ " == " ^string_of_id_t v2 ^ v2 ^ " ) begin\n"
+           ^ "    " ^ string_of_status_var ^ " = " ^ b1 ^ ";\n"
+           ^ "  else begin\n"
+           ^ "    " ^ string_of_status_var ^ " = " ^ b2 ^ ";\n"
+           ^ "  end\n"
+         | LE (v1,v2) ->
+             "case " ^ string_of_int index ^ ":\n begin\n"
+           ^ "  if(" ^string_of_id_t v1 ^ " <= " ^string_of_id_t v2 ^ v2 ^ " ) begin\n"
+           ^ "    " ^ string_of_status_var ^ " = " ^ b1 ^ ";\n"
+           ^ "  else begin\n"
+           ^ "    " ^ string_of_status_var ^ " = " ^ b2 ^ ";\n"
+           ^ "  end\n"
+       end
+
+let block_of_seq = function
+  | Vmod.SeqC (index,c,b1,b2) ->
+     {
+       body= seq_c_body index c b1 b2;
+       reglist=[];
+       wirelist=[];
+     }
+  | Vmod.SeqA (index,id_t,exp,b) ->
+
+let block_of_modcall modcall =
+  {
+       body= seq_c_body index c b1 b2;
+       reglist=[];
+       wirelist=[];
+  }
+
 
 (*
-
+  
 exception Unsupp
 
 type exp  = Val of int | Var of Id.t | Neg of Id.t | Add of Id.t * Id.t | Sub of Id.t * Id.t | ModCall of Id.t * Id.t list
