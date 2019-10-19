@@ -1,0 +1,12 @@
+
+all: fifo_test1 fifo_test2 fifo_test3
+
+fifo_test1: fifo.v fifo_test1.v
+	iverilog fifo.v fifo_test1.v -o $@
+
+fifo_test2: fifo.v fifo_test2.v
+	iverilog fifo.v fifo_test2.v -o $@
+
+fifo_test3: fifo.v fifo_test3.v
+	iverilog fifo.v fifo_test3.v -o $@
+
