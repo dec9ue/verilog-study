@@ -148,19 +148,17 @@ always @ ( posedge clk ) begin
             write_state <= E_AXIS_BRAM_W_RUNNING;
          end
       end else begin
-         if (write_state == E_AXIS_BRAM_W_RUNNING) begin
-            if(write_request) begin
+         if(write_request) begin
+            if(write_state == E_AXIS_BRAM_W_WAIT_FLUSH && write_fifo.empty) begin
+               write_state <= E_AXIS_BRAM_W_IDLE;
+               write_request_index <= 0;
+            end else begin
                write_request_index <= write_request_index + 1;
-            end
-            if(s_axis_tlast) begin
-               write_state <= E_AXIS_BRAM_W_WAIT_FLUSH;
+               if (write_state == E_AXIS_BRAM_W_RUNNING && s_axis_tlast) begin
+                  write_state <= E_AXIS_BRAM_W_WAIT_FLUSH;
+               end
             end
          end
-//      end else begin // E_WAIT_FLUSH
-//         if((!read_request) && write_fifo.empty ) begin
-//            write_state <= E_AXIS_BRAM_W_IDLE;
-//         end
-//     end
       end
    end
 end
