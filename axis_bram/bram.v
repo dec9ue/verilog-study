@@ -21,6 +21,7 @@ module bram #(
 reg [C_AXIS_BRAM_DATA_WIDTH-1:0] data [0:C_AXIS_BRAM_DEPTH-1];
 reg [$clog2(C_AXIS_BRAM_DEPTH)-1:0] index;
 reg en_req = 0;
+integer i;
 
 assign bram_dout = en_req ? data[index] : {C_AXIS_BRAM_DATA_WIDTH{1'b1}};
 
@@ -33,12 +34,17 @@ always@(posedge clk) begin
 end
 
 always@(posedge clk) begin
-//   $display("bram");
    if(en_req) begin
-      $display("output : %04x %04x", index, data[index]);
+      $display("BRAM output : %04x %04x", index, data[index]);
    end
    if(bram_we != {C_AXIS_BRAM_DATA_WIDTH/8{1'b0}}) begin
-      $display("input  : %04x %04x", bram_addr, bram_din);
+      $display("BRAM input  : %04x %04x", bram_addr, bram_din);
+   end
+end
+
+initial begin
+   for(i = 0 ; i < C_AXIS_BRAM_DEPTH ;i = i + 1) begin
+      data [i] = {C_AXIS_BRAM_DATA_WIDTH{1'b1}};
    end
 end
 
