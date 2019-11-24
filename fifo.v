@@ -14,7 +14,8 @@ module myfifo #(
 	output wire write_ready,
 	input  wire [C_DATA_WIDTH-1:0] write_data,
 	output wire full,
-	output wire empty
+	output wire empty,
+        output wire size
 );
 
 reg [C_DATA_WIDTH-1:0] data [0:C_FIFO_DEPTH-1];
@@ -23,7 +24,7 @@ reg wp_wrapped = 0;
 reg [$clog2(C_FIFO_DEPTH)-1:0] rp = 0;
 reg rp_wrapped = 0;
 
-wire size =
+assign size =
 	( wp > rp ) ? wp - rp :
 	( wp < rp ) ? (wp+C_FIFO_DEPTH) - rp :
 	( wp_wrapped  != rp_wrapped ) ? C_FIFO_DEPTH : 0; 
