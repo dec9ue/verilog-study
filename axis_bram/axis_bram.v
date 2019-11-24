@@ -146,16 +146,19 @@ always @ ( posedge clk ) begin
       s_axis_enabled <= 0;
    end else begin
       if(write_state == E_W_IDLE) begin
-         $display("write_init");
+         s_axis_enabled <= 1;
          if( write_fifo.read_valid ) begin
             write_request_index <= ctrl_w_start_index;
             write_state <= E_W_RUNNING;
             $display("write_fifo.read_valid %01x",write_fifo.read_valid);
          end
-         s_axis_enabled <= 1;
       end else begin // E_W_WAIT_FLUSH or E_W_RUNNING
          $display("write state %01x write fifo %02x",write_state, write_fifo.size);
-         if(s_axis_tlast) begin
+         // tvalid  treadyの条件をつけるかどうか悩ましい、、、
+         // 条件有り時：エラーでもtvalidを要求してしまう。
+         // 条件なし時：先行してtlastが上がっている場合に最終ワードを掴みそこねる
+         // エラー時に無理やり0を送ってもらうほうがまだいいかも
+         if(s_axis_tvalid && s_axis_tready && s_axis_tlast) begin
             s_axis_enabled <= 0;
             $display("tlast detected 1");
          end
