@@ -15,7 +15,7 @@ module myfifo #(
 	input  wire [C_DATA_WIDTH-1:0] write_data,
 	output wire full,
 	output wire empty,
-        output wire size
+        output wire [$clog2(C_FIFO_DEPTH):0] size
 );
 
 reg [C_DATA_WIDTH-1:0] data [0:C_FIFO_DEPTH-1];
